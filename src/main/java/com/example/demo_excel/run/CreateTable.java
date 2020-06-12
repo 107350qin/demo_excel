@@ -23,9 +23,9 @@ import java.util.List;
 public class CreateTable {
     public static void main(String[] args) {
         //您的excel表的位置
-        String FILE_NAME = "C:\\Users\\15790\\Desktop\\药房药库数据表梳理\\云HIS2.0药库系统设计概要1.0_OK.xlsx";
+        String FILE_NAME = "C:\\Users\\15790\\Desktop\\a.xlsx";
         //您要将数据表创建语句导出到哪个文件
-        String TO_FILE_NAME = "C:\\Users\\15790\\Desktop\\药房药库数据表梳理\\print.sql";
+        String TO_FILE_NAME = "C:\\Users\\15790\\Desktop\\print.sql";
          //这里是您要导入的数据表所在的sheet名字
         String[] strs=("sheet1,sheet2").split(",");
 
