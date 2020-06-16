@@ -23,13 +23,11 @@ import java.util.List;
 public class CreateTable {
     public static void main(String[] args) {
         //您的excel表的位置
-        String FILE_NAME = "C:\\Users\\15790\\Desktop\\药房药库数据表梳理\\云HIS2.0药库系统设计概要1.0_OK.xlsx";
+        String FILE_NAME = "C:\\Users\\15790\\Desktop\\a.xlsx";
         //您要将数据表创建语句导出到哪个文件
-        String TO_FILE_NAME = "C:\\Users\\15790\\Desktop\\药房药库数据表梳理\\print.sql";
+        String TO_FILE_NAME = "C:\\Users\\15790\\Desktop\\print.sql";
          //这里是您要导入的数据表所在的sheet名字
-        String[] strs=("药品目录,药品剂型库,药品厂家库,药品厂家,物资字典表,药理分类字典表,抗生素类别,医保类型表,医保药品目录表,医保对照表,药库设置," +
-                "入库方式表,出库方式表,初始建账表,库存信息表,库存批次明细表,库存台账表,库存台账明细表,入库主表,入库明细表,出库主表," +
-                "出库明细表,盘点主表,盘点明细表,报损主表,报损明细表,采购主表,采购明细,采购明细_临时,调价记录").split(",");
+        String[] strs=("sheet1,sheet2").split(",");
 
         ExcelUtil.run(FILE_NAME, TO_FILE_NAME, Arrays.asList(strs));
     }
