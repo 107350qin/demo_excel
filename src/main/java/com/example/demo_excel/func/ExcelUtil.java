@@ -3,10 +3,10 @@ package com.example.demo_excel.func;
 import java.io.*;
 import java.util.*;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.StringUtils;
 
 public class ExcelUtil {
     static LinkedList<String> executeSqlList = new LinkedList<>();
@@ -138,10 +138,14 @@ public class ExcelUtil {
             if (sheets == null) {
                 throw new Exception("excel中不含有sheet工作表");
             }
+
             // 遍历excel里每个sheet的数据。
             while (sheets.hasNext()) {
                 Sheet sheet = sheets.next();
                 if (SHEET_NAME_LIST.contains(sheet.getSheetName())) {
+
+                    checkRowName(sheet);
+
                     Table table = getCellValue(sheet);
                     returnlist.add(table);
 //                    System.out.println(sheet.getSheetName() + " success !");
@@ -155,6 +159,36 @@ public class ExcelUtil {
         return returnlist;
     }
 
+    private static void checkRowName(Sheet sheet) throws Exception {
+        try {
+            String desc = sheet.getRow(1).getCell(0).getStringCellValue();
+            String name = sheet.getRow(1).getCell(1).getStringCellValue();
+            String type = sheet.getRow(1).getCell(2).getStringCellValue();
+            String pk = sheet.getRow(1).getCell(3).getStringCellValue();
+            String fk = sheet.getRow(1).getCell(4).getStringCellValue();
+            String m = sheet.getRow(1).getCell(5).getStringCellValue();
+            String d = sheet.getRow(1).getCell(6).getStringCellValue();
+            String remark = sheet.getRow(1).getCell(7).getStringCellValue();
+            if (StringUtils.hasText(desc) && "字段描述".equals(desc) &&
+                    StringUtils.hasText(name) && "字段名".equals(name) &&
+                    StringUtils.hasText(type) && "数据类型".equals(type) &&
+                    StringUtils.hasText(pk) && "P_K".equals(pk) &&
+                    StringUtils.hasText(fk) && "F_K".equals(fk) &&
+                    StringUtils.hasText(m) && "M".equals(m) &&
+                    StringUtils.hasText(d) && "D".equals(d) &&
+                    StringUtils.hasText(remark) && "备注".equals(remark)
+            ) {
+//                System.out.println("表" + sheet.getSheetName() + "OK");
+            } else {
+                throw new Exception("校验不正确->设计表缺少列！sheetName=" + sheet.getSheetName());
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.err.println(sheet.getSheetName());
+            throw new Exception(e.getMessage());
+        }
+    }
+
 
     // 获取每一个Sheet工作表中的数。
     private static Table getCellValue(Sheet sheet) throws Exception {
@@ -166,6 +200,9 @@ public class ExcelUtil {
 
         String tableName = null;
         try {
+            if (!allStr.contains("（") || !allStr.contains("）")) {
+                throw new Exception("错误：没有括号");
+            }
             tableName = allStr.substring(allStr.indexOf("（") + 1, allStr.lastIndexOf("）"));
         } catch (Exception e) {
             System.out.println("确认括号是否是中文括号！=" + allStr);
